@@ -17,7 +17,9 @@ public class ContactMasterEntity {
 	@Column(name="contact_name")
 	private String contactName;
 	@Column(name="contact_number")
-	private long contactNumber;
+	private Long contactNumber;
+	private Long pinCode;
+	private String address;
 	
 
 }

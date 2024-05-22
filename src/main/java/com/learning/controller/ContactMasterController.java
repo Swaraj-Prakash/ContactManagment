@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.entity.ContactMasterEntity;
-import com.learning.repository.ContactsMasterRepo;
 import com.learning.service.ContactMasterSerivce;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class ContactMasterController {
@@ -48,6 +49,21 @@ public class ContactMasterController {
 	public ResponseEntity<String>deletContact(@PathVariable Integer contactId){
 		String status=contactMasterSerivce.delectById(contactId);
 		return new ResponseEntity<>(status,HttpStatus.OK);
+	}
+	
+	@GetMapping("/nativeQuery/{address}/{pinCode}")
+	public List<ContactMasterEntity>getByName(@PathVariable String address, @PathVariable Long pinCode){
+		return contactMasterSerivce.getContactByAddress(address, pinCode);
+	}
+	@GetMapping("/excel")
+	public void generateExcelReport(HttpServletResponse response) throws Exception {
+		response.setContentType("application/octet-stream");
+		String headerKey="Content-Disposition";
+		String headerValue="attachment;filename=contactDetails.xls";
+		
+		response.setHeader(headerKey, headerValue);
+		
+		contactMasterSerivce.generateExcel(response);
 	}
 	
 	
